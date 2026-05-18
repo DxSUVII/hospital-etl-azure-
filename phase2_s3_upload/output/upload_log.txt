@@ -1,0 +1,37 @@
+Current Working Directory: D:\data_ENGG_PROJ\hospital-etl-aws
+Looking for data at: D:\data_ENGG_PROJ\hospital-etl-aws\data\raw
+=======================================================
+ PHASE 2 — S3 UPLOAD
+=======================================================
+Uploading appointments.csv (1067.5 KB) -> s3://hospital-etl-data-suviii-2026/raw/appointments.csv)
+ Done
+Uploading billing.csv (405.2 KB) -> s3://hospital-etl-data-suviii-2026/raw/billing.csv)
+ Done
+Uploading patients.csv (121.6 KB) -> s3://hospital-etl-data-suviii-2026/raw/patients.csv)
+ Done
+Uploading doctors.csv (13.5 KB) -> s3://hospital-etl-data-suviii-2026/raw/doctors.csv)
+ Done
+Uploading surgeries.csv (123.1 KB) -> s3://hospital-etl-data-suviii-2026/raw/surgeries.csv)
+ Done
+Uploading prescriptions.csv (556.4 KB) -> s3://hospital-etl-data-suviii-2026/raw/prescriptions.csv)
+ Done
+Uploading lab_reports.csv (483.9 KB) -> s3://hospital-etl-data-suviii-2026/raw/lab_reports.csv)
+ Done
+Uploading branches.csv (4.8 KB) -> s3://hospital-etl-data-suviii-2026/raw/branches.csv)
+ Done
+
+  Uploaded 8/8 files
+
+  Verifying — listing all objects in s3://hospital-etl-data-suviii-2026/raw/
+    raw/appointments.csv                          1067.5 KB
+    raw/billing.csv                               405.2 KB
+    raw/branches.csv                              4.8 KB
+    raw/doctors.csv                               13.5 KB
+    raw/lab_reports.csv                           483.9 KB
+    raw/patients.csv                              121.6 KB
+    raw/prescriptions.csv                         556.4 KB
+    raw/surgeries.csv                             123.1 KB
+
+  Total: 8 files, 2776.0 KB
+
+  NEXT: Take a screenshot of the S3 bucket in AWS console.
