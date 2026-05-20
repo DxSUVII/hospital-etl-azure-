@@ -1,0 +1,348 @@
+
+============================================================
+ HOSPITAL DATA PROFILING REPORT
+============================================================
+  Run at: 2026-05-15 15:35:09
+  Folder: D:\data_ENGG_PROJ\hospital-etl-azure\data\raw
+
+============================================================
+ Step 1: Load CSV Files
+============================================================
+ Loaded appointments: 12,000 rows x 12 columns
+ Loaded billing: 5,000 rows x 10 columns
+ Loaded patients: 2,300 rows x 9 columns
+ Loaded doctors: 200 rows x 8 columns
+ Loaded surgeries: 1,500 rows x 11 columns
+ Loaded prescriptions: 9,000 rows x 9 columns
+ Loaded lab_reports: 7,500 rows x 8 columns
+ Loaded branches: 100 rows x 12 columns
+
+Total rows loaded across all datasets: 37,600
+
+============================================================
+ Step 2: Null Value Checks
+============================================================
+
+ [appointments]
+
+ --- Null Check ---
+ No null values found in appointments.
+
+ [billing]
+
+ --- Null Check ---
+ No null values found in billing.
+
+ [patients]
+
+ --- Null Check ---
+ No null values found in patients.
+
+ [doctors]
+
+ --- Null Check ---
+ No null values found in doctors.
+
+ [surgeries]
+
+ --- Null Check ---
+ No null values found in surgeries.
+
+ [prescriptions]
+
+ --- Null Check ---
+ No null values found in prescriptions.
+
+ [lab_reports]
+
+ --- Null Check ---
+ No null values found in lab_reports.
+
+ [branches]
+
+ --- Null Check ---
+ No null values found in branches.
+
+============================================================
+ Step 3: Data Type Checks
+============================================================
+
+ [appointments]
+
+ --- Column Types (as Pandas reads them) ---
+    Serial No                                int64        e.g. np.int64(1)
+    Case ID                                  int64        e.g. np.int64(3126327)
+    Patient ID                               str          e.g. 'KL3554'
+    Branch ID                                str          e.g. 'ME48'
+    Date of Consultation                     str          e.g. '4/2/2021'
+    Requested Doctor ID                      str          e.g. 'HP26237'
+    Consulted Doctor ID                      str          e.g. 'ZS23910'
+    Reason for Visit                         str          e.g. 'Back Pain'
+    Diagnosis                                str          e.g. 'Sciatica'
+    Prescribed Medication                    str          e.g. 'Ibuprofen'
+    Followup Required                        str          e.g. 'Yes'
+    Nutritionist Recommended                 str          e.g. 'No'
+
+ [billing]
+
+ --- Column Types (as Pandas reads them) ---
+    Serial No                                int64        e.g. np.int64(1)
+    Claim ID                                 int64        e.g. np.int64(3698731667)
+    Patient ID                               str          e.g. 'BG2065'
+    Case ID                                  int64        e.g. np.int64(867972219)
+    Branch ID                                str          e.g. 'CL09'
+    Total Bill                               float64      e.g. np.float64(5254.41)
+    Insurance Provider                       str          e.g. 'Cigna'
+    Amount Covered                           float64      e.g. np.float64(4116.19)
+    Out-of-Pocket Expenses                   float64      e.g. np.float64(1138.22)
+    Claim Status                             str          e.g. 'Rejected'
+
+ [patients]
+
+ --- Column Types (as Pandas reads them) ---
+    Sl. No                                   int64        e.g. np.int64(1)
+    Patient ID                               str          e.g. 'EL1014'
+    Date of Registration                     str          e.g. '12/11/2021'
+    Date of First Consultation               str          e.g. '12/11/2021'
+    Date of Latest Consultation              str          e.g. '4/27/2022'
+    Overall Satisfaction Rating              int64        e.g. np.int64(4)
+    Admission                                str          e.g. 'Yes'
+    Surgery Underwent                        str          e.g. 'No'
+    Total Number of Visits                   int64        e.g. np.int64(28)
+
+ [doctors]
+
+ --- Column Types (as Pandas reads them) ---
+    Sl. No                                   int64        e.g. np.int64(1)
+    Doctor Name                              str          e.g. 'Jared Jones'
+    Doctor ID                                str          e.g. 'AA785310'
+    Specialization                           str          e.g. 'General Surgery'
+    Qualification                            str          e.g. 'DM'
+    Surgery Experience                       int64        e.g. np.int64(45)
+    Practicing Branch                        str          e.g. 'CU35'
+    Other Branches Visited                   str          e.g. "['FR33', 'MA60', 'ST89']"
+
+ [surgeries]
+
+ --- Column Types (as Pandas reads them) ---
+    Serial No                                int64        e.g. np.int64(1)
+    Case ID                                  int64        e.g. np.int64(24392076)
+    Patient ID                               str          e.g. 'UY3088'
+    Doctor ID                                str          e.g. 'ME071270'
+    Branch ID                                str          e.g. 'CL09'
+    Surgery Type                             str          e.g. 'Bypass Surgery'
+    Surgery Date                             str          e.g. '12/29/2022'
+    Anesthesia Type                          str          e.g. 'General'
+    Surgery Outcome                          str          e.g. 'Failed'
+    Surgery Duration (hours)                 int64        e.g. np.int64(8)
+    Recovery Period (days)                   int64        e.g. np.int64(5)
+
+ [prescriptions]
+
+ --- Column Types (as Pandas reads them) ---
+    Serial No                                int64        e.g. np.int64(1)
+    Bill ID                                  int64        e.g. np.int64(4255335)
+    Patient ID                               str          e.g. 'WA2243'
+    Doctor ID                                str          e.g. 'PU745426'
+    Medication Name                          str          e.g. 'Omeprazole'
+    Dosage                                   str          e.g. '25mg'
+    Quantity                                 int64        e.g. np.int64(5)
+    Pharmacy Availability                    str          e.g. 'No'
+    Issued Date                              str          e.g. '9/3/2021'
+
+ [lab_reports]
+
+ --- Column Types (as Pandas reads them) ---
+    Serial No                                int64        e.g. np.int64(1)
+    Report ID                                int64        e.g. np.int64(2377503)
+    Case ID                                  int64        e.g. np.int64(3789332393)
+    Patient ID                               str          e.g. 'WA2243'
+    Branch ID                                str          e.g. 'ST02'
+    Test Name                                str          e.g. 'MRI Scan'
+    Test Date                                str          e.g. '5/28/2020'
+    Result                                   str          e.g. 'Normal'
+
+ [branches]
+
+ --- Column Types (as Pandas reads them) ---
+    Sl. No                                   int64        e.g. np.int64(1)
+    Branch ID                                str          e.g. 'CU01'
+    Location                                 str          e.g. 'Cuyahoga'
+    OT_Available                             str          e.g. 'Yes'
+    Inhouse Anesthetician                    str          e.g. 'Yes'
+    No. of OTs                               int64        e.g. np.int64(6)
+    Inhouse Pharmacy                         str          e.g. 'No'
+    Inhouse Nutritionist                     str          e.g. 'Yes'
+    Inpatient Rooms                          int64        e.g. np.int64(124)
+    Luxury Suite Rooms                       str          e.g. 'No'
+    Prayer Room                              str          e.g. 'Yes'
+    Kids Play Area                           str          e.g. 'No'
+
+============================================================
+ STEP 4: LARGE INTEGER CHECK (affects SQL column type choice)
+============================================================
+
+  [billing.csv] — Claim ID and Case ID are the suspected ones
+
+ --- Large Number Check (SQL INT max = 2,147,483,647) ---
+    [OK] Serial No: max value = 5,000 -> INT is fine
+    [WARN] Claim ID: max value = 9,989,088,692 -> needs BIGINT in SQL
+    [WARN] Case ID: max value = 9,999,663,448 -> needs BIGINT in SQL
+    [OK] Total Bill: max value = 49,938.13 -> INT is fine
+    [OK] Amount Covered: max value = 44,208.32 -> INT is fine
+    [OK] Out-of-Pocket Expenses: max value = 34,510.29 -> INT is fine
+
+============================================================
+ STEP 5: CATEGORICAL VALUES AUDIT
+============================================================
+
+  [surgeries] — Surgery Outcome, Anesthesia Type
+
+ --- Categorical Value Check ---
+ Column: Surgery Outcome
+ 'Complications': 505 rows (33.7%)
+ 'Failed': 502 rows (33.5%)
+ 'Successful': 493 rows (32.9%)
+ Column: Anesthesia Type
+ 'Regional': 509 rows (33.9%)
+ 'General': 496 rows (33.1%)
+ 'Local': 495 rows (33.0%)
+
+  [prescriptions] -- Pharmacy Availability
+
+ --- Categorical Value Check ---
+ Column: Pharmacy Availability
+ 'No': 4502 rows (50.0%)
+ 'Yes': 4498 rows (50.0%)
+
+  [patients] — Admission, Surgery Underwent
+
+ --- Categorical Value Check ---
+ Column: Admission
+ 'No': 1154 rows (50.2%)
+ 'Yes': 1146 rows (49.8%)
+ Column: Surgery Underwent
+ 'No': 1179 rows (51.3%)
+ 'Yes': 1121 rows (48.7%)
+
+============================================================
+ STEP 6: DATE VALIDATION
+============================================================
+
+  [appointments]
+    [OK] Date of Consultation: all valid | range: 2020-01-01 -> 2023-12-28
+
+  [patients]
+    [OK] Date of Registration: all valid | range: 2020-03-18 -> 2025-03-17
+    [OK] Date of First Consultation: all valid | range: 2020-03-18 -> 2025-03-17
+    [OK] Date of Latest Consultation: all valid | range: 2020-04-30 -> 2028-06-29
+
+  [surgeries]
+    [OK] Surgery Date: all valid | range: 2020-01-01 -> 2024-12-31
+
+  [prescriptions]
+    [OK] Issued Date: all valid | range: 2020-01-01 -> 2025-01-01
+
+  [lab_reports]
+    [OK] Test Date: all valid | range: 2020-01-01 -> 2025-01-01
+
+============================================================
+ STEP 7: YES/NO COLUMNS (will become BIT in SQL)
+============================================================
+
+  [branches]
+
+ --- Yes/No Col Verification: OT_Available ---
+ OT_Available: Yes= 49, No= 51
+
+ --- Yes/No Col Verification: Inhouse Anesthetician ---
+ Inhouse Anesthetician: Yes= 48, No= 52
+
+ --- Yes/No Col Verification: Inhouse Pharmacy ---
+ Inhouse Pharmacy: Yes= 51, No= 49
+
+ --- Yes/No Col Verification: Inhouse Nutritionist ---
+ Inhouse Nutritionist: Yes= 43, No= 57
+
+ --- Yes/No Col Verification: Luxury Suite Rooms ---
+ Luxury Suite Rooms: Yes= 49, No= 51
+
+ --- Yes/No Col Verification: Prayer Room ---
+ Prayer Room: Yes= 51, No= 49
+
+ --- Yes/No Col Verification: Kids Play Area ---
+ Kids Play Area: Yes= 45, No= 55
+
+  [patients]
+
+ --- Yes/No Col Verification: Admission ---
+ Admission: Yes= 1146, No= 1154
+
+ --- Yes/No Col Verification: Surgery Underwent ---
+ Surgery Underwent: Yes= 1121, No= 1179
+
+  [appointments]
+
+ --- Yes/No Col Verification: Followup Required ---
+ Followup Required: Yes= 5939, No= 6061
+
+ --- Yes/No Col Verification: Nutritionist Recommended ---
+ Nutritionist Recommended: Yes= 6036, No= 5964
+
+  [prescriptions]
+
+ --- Yes/No Col Verification: Pharmacy Availability ---
+ Pharmacy Availability: Yes= 4498, No= 4502
+
+============================================================
+ STEP 8: DOCTORS - LIST-STRING COLUMN ANALYSIS
+============================================================
+    Raw column type: string (e.g. "['FR33', 'MA60', 'ST89']")
+    Parse errors: 0
+    Total (doctor, branch) pairs unpacked: 384
+    Unique branch IDs referenced: 97
+
+    Preview of unpacked doctor_branch_visits table:
+    doctor_id       branch_id
+    -------------------------
+    AA785310        FR33
+    AA785310        MA60
+    AA785310        ST89
+    PU234420        MO08
+    PU234420        LU59
+    PU234420        CU66
+    SU956105        LU58
+    HW266737        MO64
+    ... (384 total rows)
+
+    -> IN ETL: drop this column from doctors table, 
+      create separate 'doctor_branch_visits' table instead.
+
+============================================================
+ STEP 9: FOREIGN KEY INTEGRITY CHECKS
+============================================================
+ appointments.Patient ID -> patients.Patient ID: 11981 orphan IDs found
+ Example Orphans: ['NQ7684', 'XS6968', 'CU5183', 'WL1695', 'RR8135']
+ appointments.Branch ID -> branches.Branch ID: 317 orphan IDs found
+ Example Orphans: ['ME61', 'ME10', 'CU89', 'ME75', 'FR88']
+ appointments.Consulted Doctor ID -> doctors.Doctor ID: 11999 orphan IDs found
+ Example Orphans: ['XU62204', 'ET29393', 'WC80453', 'LW99482', 'PP26739']
+ billing.Patient ID -> patients.Patient ID: 3191 orphan IDs found
+ Example Orphans: ['CW7067', 'XS1460', 'JQ9113', 'WR4361', 'CZ8973']
+ surgeries.Patient ID -> patients.Patient ID: 1292 orphan IDs found
+ Example Orphans: ['PD3793', 'AI2015', 'XI2546', 'VC3606', 'BR8410']
+ surgeries.Doctor ID -> doctors.Doctor ID: 469 orphan IDs found
+ Example Orphans: ['UJ552340', 'WM378708', 'MH692217', 'BP315502', 'LZ710052']
+ prescriptions.Patient ID -> patients.Patient ID: 4165 orphan IDs found
+ Example Orphans: ['CW7067', 'SX5642', 'JQ9113', 'XS1460', 'WR4361']
+ lab_reports.Patient ID -> patients.Patient ID: 3858 orphan IDs found
+ Example Orphans: ['XS1460', 'WR4361', 'CZ8973', 'ZF1466', 'DZ1390']
+
+============================================================
+ STEP 10: BUSINESS LOGIC CHECK — REQUESTED vs CONSULTED DOCTOR
+============================================================
+
+  Appointments where consulted != requested: 12,000 / 12,000 (100.0%)
+  -> ALL appointments have a different consulted doctor.
+  -> This is the intended data design — not an error.
+  -> Insight: useful for 'doctor substitution rate' reports.
