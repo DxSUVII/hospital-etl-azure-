@@ -1,0 +1,49 @@
+=======================================================
+ PHASE 3 — ETL PIPELINE
+=======================================================
+
+[Step 1] Creating tables in RDS...
+  Tables created successfully
+
+[Step 2] Loading dimension tables...
+  Reading s3://hospital-etl-data-suviii-2026/raw/branches.csv
+  Loaded: 100 rows × 12 columns
+  Loaded 100 rows -> branches
+  Reading s3://hospital-etl-data-suviii-2026/raw/doctors.csv
+  Loaded: 200 rows × 8 columns
+  Loaded 200 rows -> doctors
+  Loaded 384 rows -> doctor_branch_visits
+  Reading s3://hospital-etl-data-suviii-2026/raw/patients.csv
+  Loaded: 2,300 rows × 9 columns
+  Loaded 2,300 rows -> patients
+
+[Step 3] Loading fact tables...
+  Reading s3://hospital-etl-data-suviii-2026/raw/appointments.csv
+  Loaded: 12,000 rows × 12 columns
+  Loaded 12,000 rows -> appointments
+  Reading s3://hospital-etl-data-suviii-2026/raw/billing.csv
+  Loaded: 5,000 rows × 10 columns
+  Loaded 5,000 rows -> billing
+  Reading s3://hospital-etl-data-suviii-2026/raw/surgeries.csv
+  Loaded: 1,500 rows × 11 columns
+  Loaded 1,500 rows -> surgeries
+  Reading s3://hospital-etl-data-suviii-2026/raw/lab_reports.csv
+  Loaded: 7,500 rows × 8 columns
+  Loaded 7,500 rows -> lab_reports
+  Reading s3://hospital-etl-data-suviii-2026/raw/prescriptions.csv
+  Loaded: 9,000 rows × 9 columns
+  Loaded 9,000 rows -> prescriptions
+
+[Step 4] Verifying row counts in RDS...
+  branches                           100 rows
+  doctors                            200 rows
+  doctor_branch_visits               384 rows
+  patients                         2,300 rows
+  appointments                    12,000 rows
+  billing                          5,000 rows
+  surgeries                        1,500 rows
+  lab_reports                      7,500 rows
+  prescriptions                    9,000 rows
+
+ ETL complete. Screenshot the row counts above.
+ Then go to RDS Query Editor and screenshot the tables.
