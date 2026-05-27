@@ -13,6 +13,10 @@ import os
 import io
 from datetime import datetime
 from sqlalchemy import create_engine
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 def get_db_engine():
     """
@@ -164,3 +168,7 @@ def lambda_handler(event, context):
             "statusCode": 500,
             "body": f"Internal Server Error: {str(e)}"
         }
+
+# Allow script to run locally for testing/debugging
+if __name__ == "__main__":
+    lambda_handler(None, None)
