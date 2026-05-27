@@ -33,6 +33,10 @@ This project builds a **production-style cloud ETL pipeline** for a multi-branch
 
 ## 🏗️ Architecture
 
+<div align="center">
+<img width="525" height="458" alt="Pipeline Architecture" src="https://github.com/user-attachments/assets/e3741c54-f0e9-4a53-adb6-6774d16134b9"/>
+</div>
+
 ```
 ┌─────────────────────────────────────────────────────────────────────┐
 │  SOURCE                                                             │
@@ -44,40 +48,52 @@ This project builds a **production-style cloud ETL pipeline** for a multi-branch
                            ▼
 ┌─────────────────────────────────────────────────────────────────────┐
 │  STORAGE  ·  Amazon S3 — hospital-etl-data-suviii-2026             │
-│                                                                     │
-│   📁 raw/          📁 processed/       📁 reports/                 │
-│   8 source CSVs    ETL staging         daily_report_*.csv          │
+│   📁 raw/   8 source CSVs    📁 reports/   daily_report_*.csv      │
 └──────────────────────────┬──────────────────────────────────────────┘
                            │ read via boto3
                            ▼
 ┌─────────────────────────────────────────────────────────────────────┐
 │  TRANSFORM  ·  Python ETL — pandas + SQLAlchemy                    │
-│                                                                     │
-│   🔄 Cast types        📝 Rename cols      🔗 Unpack lists         │
-│   DATE · BIGINT · BOOL  snake_case          doctor_branch_visits    │
-│                                                                     │
-│                    📦 Load order: dims → facts                      │
+│   🔄 Cast types (DATE·BIGINT·BOOL)   📝 Rename cols (snake_case)   │
+│   🔗 Unpack lists (doctor_branch_visits)   📦 dims → facts          │
 └──────────────────────────┬──────────────────────────────────────────┘
                            │ to_sql() insert
                            ▼
 ┌─────────────────────────────────────────────────────────────────────┐
-│  SERVE  ·  Amazon RDS — PostgreSQL · hospital-etl-db · ap-south-1  │
-│                                                                     │
-│   Dimension tables          Fact tables             Total           │
-│   branches (100)            appointments (12,000)   37,984 rows     │
-│   doctors  (200)            billing      (5,000)    9 tables        │
-│   patients (2,300)          surgeries    (1,500)                    │
-│   doctor_branch_visits(384) lab_reports  (7,500)                    │
-│                             prescriptions(9,000)                    │
+│  SERVE  ·  Amazon RDS PostgreSQL · hospital-etl-db · ap-south-1    │
+│   branches(100) · doctors(200) · patients(2,300)                   │
+│   appointments(12,000) · billing(5,000) · surgeries(1,500)         │
+│   lab_reports(7,500) · prescriptions(9,000)    →  37,984 rows      │
 └──────────────────────────┬──────────────────────────────────────────┘
                            │ cron(0 9 * * ? *)
                            ▼
 ┌─────────────────────────────────────────────────────────────────────┐
 │  REPORT  ·  AWS Lambda + Amazon EventBridge                        │
-│                                                                     │
 │   ƛ hospital-daily-report   🕘 09:00 UTC daily   📄 → S3 reports/ │
 └─────────────────────────────────────────────────────────────────────┘
 ```
+
+---
+
+## ☁️ Cloud Services
+
+<div align="center">
+
+**Amazon S3 — Storage**
+
+<img width="1360" height="461" alt="S3 Bucket" src="https://github.com/user-attachments/assets/f6bfabbc-cc13-408e-874a-35538cc5f068"/>
+
+*S3 bucket with `raw/` (8 source CSVs) and `reports/` (daily generated reports) folders*
+
+<br/>
+
+**Amazon RDS — PostgreSQL Database**
+
+<img width="1360" height="414" alt="RDS Instance" src="https://github.com/user-attachments/assets/52a015e9-8205-4bdb-a60f-c379d27cc048"/>
+
+*RDS PostgreSQL instance `hospital-etl-db` — Status: Available · ap-south-1*
+
+</div>
 
 ---
 
@@ -127,8 +143,7 @@ hospital-etl-aws/
 ├── 📁 docs/
 │   └── architecture_documents.docx
 │
-├── 📁 screenshots/                   ← AWS console + query execution evidence
-│
+├── 📁 screenshots/
 ├── .env                              ← credentials (gitignored ✅)
 ├── .gitignore
 ├── requirements.txt
@@ -189,6 +204,10 @@ Reads from S3 → transforms in pandas → loads into RDS:
 > **Why pandas instead of AWS Glue?**
 > Glue Spark jobs cost $0.44–$0.88 minimum per run. For 5.4 MB of CSV data, pandas completes the same job in under 10 seconds at **zero cost**. Glue is the right choice at TB scale — this trade-off is documented in the architecture doc as a deliberate decision.
 
+**ETL Row Count Verification**
+
+<img width="1361" height="551" alt="ETL Row Counts" src="https://github.com/user-attachments/assets/548e2027-cb85-4c38-999f-4ef3856d7b88"/>
+
 </details>
 
 <details>
@@ -207,6 +226,10 @@ Six analytical queries executed in **AWS CloudShell** against RDS PostgreSQL:
 | 5 | Doctor substitution rate per branch | 100% substitution — confirmed as design intent |
 | 6 | Claim status by insurance provider | Blue Cross leads approvals at 35.54% |
 
+**Table Schema Reference**
+
+<img width="736" height="257" alt="Table Schema" src="https://github.com/user-attachments/assets/eeb6d326-af35-4a28-bc04-1190696620d7"/>
+
 </details>
 
 <details>
@@ -221,6 +244,14 @@ Six analytical queries executed in **AWS CloudShell** against RDS PostgreSQL:
 - Saves output to `s3://hospital-etl-data-suviii-2026/reports/daily_report_YYYY-MM-DD.csv`
 - Uses `AWSSDKPandas-Python311` Lambda layer (pandas + psycopg2 pre-bundled)
 - Returns `{"statusCode": 200, "body": "Report saved to reports/daily_report_*.csv"}`
+
+**Lambda Execution — Status 200**
+
+<img width="1358" height="497" alt="Lambda Output" src="https://github.com/user-attachments/assets/e09a7e92-3858-4a7a-a32c-b8d5e69d9063"/>
+
+**EventBridge Schedule — Enabled**
+
+<img width="1365" height="489" alt="EventBridge Schedule" src="https://github.com/user-attachments/assets/9a36d0ae-7202-4c4b-8b68-1a780547c273"/>
 
 </details>
 
@@ -238,8 +269,8 @@ Six analytical queries executed in **AWS CloudShell** against RDS PostgreSQL:
 
 ```bash
 # Clone the repository
-git clone https://github.com/YOUR_USERNAME/hospital-etl-aws.git
-cd hospital-etl-aws
+git clone https://github.com/YOUR_USERNAME/MetaData-Ingestion-Engine.git
+cd MetaData-Ingestion-Engine
 
 # Create virtual environment
 python -m venv venv
@@ -339,28 +370,6 @@ python phase5_reporting/05_report_generator.py
 
 ---
 
-## 📸 Evidence & Screenshots
-
-| | Screenshot | What it shows |
-|--|-----------|--------------|
-| 🏗️ | !<img width="525" height="458" alt="architecture-s3" src="https://github.com/user-attachments/assets/e3741c54-f0e9-4a53-adb6-6774d16134b9" />
- | Full pipeline architecture diagram |
-| 🪣 | ![S3]<img width="1360" height="461" alt="s3_bucket" src="https://github.com/user-attachments/assets/f6bfabbc-cc13-408e-874a-35538cc5f068" />
- | S3 bucket with `raw/` and `reports/` folders |
-| 🗄️ | ![RDS]<img width="1360" height="414" alt="rds_instance_running" src="https://github.com/user-attachments/assets/52a015e9-8205-4bdb-a60f-c379d27cc048" />
- | RDS PostgreSQL instance — Available status |
-| 📊 | ![ETL]<img width="1361" height="551" alt="tables_and_row_counts" src="https://github.com/user-attachments/assets/548e2027-cb85-4c38-999f-4ef3856d7b88" />
- | Post-load row count verification (all 9 tables) |
-| 📋 | ![Schema]<img width="736" height="257" alt="REFRENCE" src="https://github.com/user-attachments/assets/eeb6d326-af35-4a28-bc04-1190696620d7" />
- | Table schema with data types from RDS |
-
-| ƛ | ![Lambda] <img width="1358" height="497" alt="lamda_function_output" src="https://github.com/user-attachments/assets/e09a7e92-3858-4a7a-a32c-b8d5e69d9063" />
- | Lambda execution — Status 200 |
-| 🕘 | ![EventBridge]<img width="1365" height="489" alt="cloudwatch_shedule " src="https://github.com/user-attachments/assets/9a36d0ae-7202-4c4b-8b68-1a780547c273" />
-| EventBridge schedule — Enabled |
-
----
-
 ## 📄 License
 
 Built as part of an internship submission for the **Rubixie Data Engineering Cloud Track**.
@@ -373,4 +382,4 @@ Built as part of an internship submission for the **Rubixie Data Engineering Clo
 
 ⭐ *If you found this project useful, consider giving it a star!*
 
-</div>now 
+</div>
